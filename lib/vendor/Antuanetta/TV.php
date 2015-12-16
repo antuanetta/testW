@@ -7,18 +7,19 @@ namespace Antuanetta;
  */
 class TV 
 {
+    const CHANNEL_MAX = 100;
     const CONTRAST_MAX = 100;
     const VOLUME_MAX = 100;
 
     private $on;
-    private $currentChannel;
+    private $currentChannelNum;
     private $volume;
     private $contrast;
     private $channels;
  
-    public function __construct($on, array $channels, $currentChannel = 1, $volume = 10, $contrast = 50) {
+    public function __construct($on, array $channels, $currentChannelNum = 1, $volume = 10, $contrast = 50) {
         $this->on = $on;
-        $this->currentChannel = $currentChannel;
+        $this->currentChannelNum = $currentChannelNum;
         $this->volume = $volume;
         $this->contrast = $contrast;
         $this->channels = $channels;
@@ -43,16 +44,16 @@ class TV
     /**
      * Переключение каналов.
      * Переход по списку каналов замкнут
-     * @param boolean up направление изменения
+     * @param boolean $up направление изменения
      */
     public function switchChannel($up)
     {
         if (!$this->isOn()) $this->turn(true);
 
         if ($up) {
-            $this->currentChannel = $this->currentChannel < count($this->channels) - 1 ? $this->currentChannel++ : 0;
+            $this->currentChannelNum = $this->currentChannelNum < self::CHANNEL_MAX - 1 ? $this->currentChannelNum + 1 : 0;
         } else {
-            $this->currentChannel = $this->currentChannel > 0 ? $this->currentChannel-- : count($this->channels) - 1;
+            $this->currentChannelNum = $this->currentChannelNum > 0 ? $this->currentChannelNum - 1 : self::CHANNEL_MAX - 1;
         }
     }
  
@@ -60,16 +61,18 @@ class TV
      * Переключение на конкретный канал.
      * Если номер попадает в диапазон от 0 до размера массива каналов, то переключает
      * иначе - не произойдет ничего
+     * @param integer $num номер канала
      */
     public function switchToChannel($num)
     { 
-        if ($num >= 0 && $num < count($this->channels)) {
-            $this->currentChannel = $num;
+        if ($num >= 0 && $num < self::CHANNEL_MAX) {
+            $this->currentChannelNum = $num;
         }
     }
  
     /**
      * Изменение громкости.
+     * @param boolean $up направление изменения
      */
     public function changeVolume($up)
     { 
@@ -85,9 +88,9 @@ class TV
     /**
      * Возвращает номер текущего канала.
      */
-    public function getCurrentChannel()
+    public function getCurrentChannelNum()
     {
-        return $this->channels[$this->currentChannel];
+        return $this->currentChannelNum;
     }
  
     /**
@@ -108,6 +111,7 @@ class TV
  
     /**
      * Изменение контраста.
+     * @param boolean $up направление изменения
      */
     public function changeContrast($up)
     { 
@@ -118,5 +122,15 @@ class TV
         } elseif(!$up && $this->contrast > 0) {
             $this->contrast--;
         }
+    }
+
+    public function __toString()
+    {
+        return sprintf("Tv is: %s, CurrentChannel: %d, Volume: %d, Contrast: %d",
+            $this->isOn() ? "On" : "Off", 
+            $this->getCurrentChannelNum(), 
+            $this->getVolume(), 
+            $this->getContrast()
+        );
     }
 };

@@ -56,7 +56,7 @@ class SingingBird implements Bird
         $this->melody = (string) $melody;
     }
     
-    public function singMelody() // âûâîä çàâèñèò îò kind
+    public function singMelody() // Ð²Ñ‹Ð²Ð¾Ð´ Ð·Ð°Ð²Ð¸ÑÐ¸Ñ‚ Ð¾Ñ‚ kind
     {
         $this->checkAlive();
         echo $this->getKind() . ' ' . $this->getMelody();

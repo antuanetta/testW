@@ -20,15 +20,14 @@ foreach ($srcChannels as $channel) {
 }
 
 $tv = new TV(false, $listChannels);
-print_r($tv->isOn());
+echo $tv . "<br/>";
 
 $tv->turn();
-print_r($tv->isOn());
-
-$tv->switchToChannel(123);
-print_r($tv->getCurrentChannel());
-
 $tv->switchToChannel(2);
-print_r($tv->getCurrentChannel());
+$tv->changeContrast(false);
+$tv->changeVolume(false);
 
+echo $tv . "<br/>";
+echo "<pre>";
 print_r($tv);
+
